@@ -1,6 +1,6 @@
 # SimpleWebServer
 
-Simple WebServer for C#
+Simple Web Server for C#
 
 ## Simple Demo
 
