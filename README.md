@@ -1,4 +1,4 @@
-# WebSV
+# SimpleWebServer
 
 Simple WebServer for C#
 
