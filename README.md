@@ -9,8 +9,8 @@ Program.cs:
 ```csharp
 using System;
 
-using WebSV;
-using WebSV.Extensions;
+using SimpleWebServer;
+using SimpleWebServer.Extensions;
 
 namespace ConsoleApp1
 {
@@ -38,8 +38,8 @@ Controller1.cs:
 using System;
 using System.Net;
 
-using WebSV.Attributes;
-using WebSV.Extensions;
+using SimpleWebServer.Attributes;
+using SimpleWebServer.Extensions;
 
 namespace ConsoleApp1
 {
