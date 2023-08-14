@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SimpleWebServer</name>
+    </assembly>
+    <members>
+        <member name="T:SimpleWebServer.Attributes.WebPath">
+            <summary>
+            WebPath Attribute
+            </summary>
+        </member>
+        <member name="M:SimpleWebServer.Attributes.WebPath.#ctor(System.String)">
+            <summary>
+            Specify the absolute endpoint path by using this attribute
+            </summary>
+            <param name="AbsPath">Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]</param>
+        </member>
+        <member name="P:SimpleWebServer.Attributes.WebPath.AbsPath">
+            <summary>
+            Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]
+            </summary>
+        </member>
+        <member name="T:SimpleWebServer.Extensions.extensions">
+            <summary>
+            extensions
+            </summary>
+        </member>
+        <member name="M:SimpleWebServer.Extensions.extensions.CreateHTMLResponse(System.Net.HttpListenerContext,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Creates an HTML response to the incoming request.
+            </summary>
+            <param name="ctx">The main context</param>
+            <param name="htmlContent">HTML content</param>
+            <param name="additionalHeaders">Additional HTTP headers</param>
+            <param name="charset">HTTP charset, utf-8 by default</param>
+            <returns>True if the response creation is successful; otherwise, false.</returns>
+        </member>
+        <member name="M:SimpleWebServer.Extensions.extensions.CreateResponse(System.Net.HttpListenerContext,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Creates a simple string response to the incoming request.
+            </summary>
+            <param name="ctx">The main context</param>
+            <param name="content">String Content</param>
+            <param name="code">HTTP response code, 200 [OK] by default</param>
+            <param name="additionalHeaders">Additional HTTP headers</param>
+            <param name="charset">HTTP charset, utf-8 by default</param>
+            <returns>True if the response creation is successful; otherwise, false.</returns>
+        </member>
+        <member name="M:SimpleWebServer.Extensions.extensions.CreateResponse(System.Net.HttpListenerContext,System.Byte[],System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Creates a response to the incoming request.
+            </summary>
+            <param name="ctx">The main context</param>
+            <param name="buffer">Bytes to be sent</param>
+            <param name="code">HTTP response code, 200 [OK] by default</param>
+            <param name="contentType">HTTP content type, null by default</param>
+            <param name="additionalHeaders">Additional HTTP headers</param>
+            <returns>True if the response creation is successful; otherwise, false.</returns>
+        </member>
+        <member name="M:SimpleWebServer.Extensions.extensions.Redirect(System.Net.HttpListenerContext,System.String)">
+            <summary>
+            Redirects the incoming request to a different URL.
+            </summary>
+            <param name="ctx">The main context.</param>
+            <param name="redirectUrl">The URL to redirect to.</param>
+        </member>
+        <member name="T:SimpleWebServer.WebServer">
+            <summary>
+            Simple Web Server
+            </summary>
+        </member>
+        <member name="M:SimpleWebServer.WebServer.#ctor(System.String)">
+            <summary>
+            Creation of the WebServer
+            </summary>
+            <param name="prefix">Web Prefix [Example: "http://localhost:8080/"]</param>
+        </member>
+        <member name="M:SimpleWebServer.WebServer.AddController``1(SimpleWebServer.WebServer.PreExecuteControllerMethod)">
+            <summary>
+            Adds a controller class to the WebServer
+            </summary>
+            <typeparam name="T">Controller Class</typeparam>
+            <param name="PreExecute">PreExecute method for this controller (This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed)</param>
+            <returns>Added Endpoint Count</returns>
+        </member>
+        <member name="M:SimpleWebServer.WebServer.Start">
+            <summary>
+            Starts the WebServer
+            </summary>
+        </member>
+        <member name="M:SimpleWebServer.WebServer.Stop">
+            <summary>
+            Stops the WebServer
+            </summary>
+        </member>
+        <member name="T:SimpleWebServer.WebServer.ControllerMethod">
+            <summary>
+            The method that will be executed when a user sends a request to the specified path.
+            </summary>
+        </member>
+        <member name="T:SimpleWebServer.WebServer.PreExecuteControllerMethod">
+            <summary>
+            This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed.
+            </summary>
+        </member>
+        <member name="E:SimpleWebServer.WebServer.On404NotFound">
+            <summary>
+            The event that will be invoked when a user sends a request to an undefined path.
+            </summary>
+        </member>
+    </members>
+</doc>
