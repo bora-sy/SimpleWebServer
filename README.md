@@ -2,6 +2,8 @@
 
 Simple Web Server for C#
 
+[![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
+
 ## Simple Demo
 
 Program.cs:
