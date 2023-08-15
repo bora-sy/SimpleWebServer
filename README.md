@@ -2,6 +2,9 @@
 
 Simple Web Server for C#
 
+**Contact me from discord for additional help & suggestions
+Discord: borasy**
+
 [![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
 
 ## Simple Demo
