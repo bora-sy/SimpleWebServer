@@ -9,15 +9,21 @@
             WebPath Attribute
             </summary>
         </member>
-        <member name="M:SimpleWebServer.Attributes.WebPath.#ctor(System.String)">
+        <member name="M:SimpleWebServer.Attributes.WebPath.#ctor(System.String,SimpleWebServer.HttpMethods)">
             <summary>
-            Specify the absolute endpoint path by using this attribute
+            Specify the endpoint path by using this attribute
             </summary>
-            <param name="AbsPath">Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]</param>
+            <param name="Path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
+            <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default</param>
         </member>
-        <member name="P:SimpleWebServer.Attributes.WebPath.AbsPath">
+        <member name="P:SimpleWebServer.Attributes.WebPath.Path">
             <summary>
             Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]
+            </summary>
+        </member>
+        <member name="P:SimpleWebServer.Attributes.WebPath.AllowedHttpMethods">
+            <summary>
+            Allowed HTTP Methods
             </summary>
         </member>
         <member name="T:SimpleWebServer.Extensions.extensions">
@@ -106,6 +112,56 @@
         <member name="E:SimpleWebServer.WebServer.On404NotFound">
             <summary>
             The event that will be invoked when a user sends a request to an undefined path.
+            </summary>
+        </member>
+        <member name="E:SimpleWebServer.WebServer.On405MethodNotAllowed">
+            <summary>
+            The event that will be invoked when a user sends a request with an invalid http method
+            </summary>
+        </member>
+        <member name="T:SimpleWebServer.HttpMethods">
+            <summary>
+            Http Methods
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.GET">
+            <summary>
+            Http Method GET
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.POST">
+            <summary>
+            Http Method POST
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.PUT">
+            <summary>
+            Http Method PUT
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.PATCH">
+            <summary>
+            Http Method PATCH
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.DELETE">
+            <summary>
+            Http Method DELETE
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.HEAD">
+            <summary>
+            Http Method HEAD
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.OPTIONS">
+            <summary>
+            Http Method OPTIONS
+            </summary>
+        </member>
+        <member name="F:SimpleWebServer.HttpMethods.ALLOW_ALL">
+            <summary>
+            Using this will allow any valid / invalid Http Methods
             </summary>
         </member>
     </members>

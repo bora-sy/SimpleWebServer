@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static SimpleWebServer.WebServer;
 
 namespace SimpleWebServer.Attributes
 {
@@ -8,41 +9,36 @@ namespace SimpleWebServer.Attributes
     /// WebPath Attribute
     /// </summary>
     [System.AttributeUsage(AttributeTargets.Method)]
-    public class WebPath : Attribute
+    public class WebPath: Attribute
     {
         /// <summary>
-        /// Specify the absolute endpoint path by using this attribute
+        /// Specify the endpoint path by using this attribute
         /// </summary>
-        /// <param name="AbsPath">Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]</param>
-        public WebPath(string AbsPath)
+        /// <param name="Path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
+        /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default</param>
+        public WebPath(string Path, HttpMethods allowedMethods = HttpMethods.ALLOW_ALL)
         {
-            this.absPath = AbsPath;
+            this.path = Path;
+            this.allowedHttpMethods = allowedMethods;
         }
 
         /// <summary>
         /// Absolute Path of the endpoint [Examples: "/", "/index", "/api/login"]
         /// </summary>
-        public string AbsPath
-        {
-            get { return this.absPath; }
-        }
-        private string absPath;
-    }
-
-
-    /*
-    [System.AttributeUsage(AttributeTargets.Method)]
-    public class WebSubDirectoryPath : Attribute
-    {
-        public WebSubDirectoryPath(string Path)
-        {
-            this.path = Path;
-        }
         public string Path
         {
             get { return this.path; }
         }
         private string path;
+
+        /// <summary>
+        /// Allowed HTTP Methods
+        /// </summary>
+        public HttpMethods AllowedHttpMethods
+        {
+            get { return this.allowedHttpMethods; }
+        }
+        private HttpMethods allowedHttpMethods;
     }
-    */
+
 }

@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using SimpleWebServer.Extensions;
 using SimpleWebServer.Attributes;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace SimpleWebServer
 {
@@ -17,6 +18,8 @@ namespace SimpleWebServer
     /// </summary>
     public class WebServer
     {
+
+
         /// <summary>
         /// Creation of the WebServer
         /// </summary>
@@ -44,24 +47,19 @@ namespace SimpleWebServer
             foreach (MethodInfo method in methods)
             {
                 WebPath exactPathAttr = method.GetCustomAttribute<WebPath>();
-                //WebSubDirectoryPath? subDirectoryPathAttr = method.GetCustomAttribute<WebSubDirectoryPath>();
-
-                //if (exactPathAttr == null && subDirectoryPathAttr == null) continue;
                 if (exactPathAttr == null) continue;
 
                 ControllerMethod cmethod = (ControllerMethod)method.CreateDelegate(typeof(ControllerMethod), instance);
 
+                ControllerEndpoint endpoint = new ControllerEndpoint(
+                    exactPathAttr.Path,
+                    cmethod,
+                    PreExecute,
+                    exactPathAttr.AllowedHttpMethods
+                    );
 
-
-                if (exactPathAttr != null)
-                {
-                    controller_exactPaths.Add(exactPathAttr.AbsPath, (cmethod, PreExecute));
-                    c++;
-                }
-                //else if (subDirectoryPathAttr != null) { controller_subDirectories.Add(subDirectoryPathAttr.Path, (cmethod, PreExecute)); c++; }
-
-
-
+                endpoints.Add(endpoint);
+                c++;
             }
 
             return c;
@@ -100,50 +98,147 @@ namespace SimpleWebServer
         /// </summary>
         public event ControllerMethod On404NotFound;
 
-
+        /// <summary>
+        /// The event that will be invoked when a user sends a request with an invalid http method
+        /// </summary>
+        public event ControllerMethod On405MethodNotAllowed;
 
         private HttpListener listener;
 
-        private Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)> controller_exactPaths = new Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)>();
+        private class ControllerEndpoint
+        {
+            private string regexExpression;
+            public ControllerMethod controllerMethod { get; private set; }
+            public PreExecuteControllerMethod preExecuteControllerMethod { get; private set; }
+            public HttpMethods allowedHttpMethods { get; private set; }
 
-        //private Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)> controller_subDirectories = new Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)>();
+            public ControllerEndpoint(string path, ControllerMethod controllerMethod, PreExecuteControllerMethod preExecuteControllerMethod, HttpMethods allowedHttpMethods)
+            {
+                this.regexExpression = WildCardToRegular(path);
+                this.controllerMethod = controllerMethod;
+                this.preExecuteControllerMethod = preExecuteControllerMethod;
+                this.allowedHttpMethods = allowedHttpMethods;
+
+
+                string WildCardToRegular(string value)
+                {
+                    return "^" + Regex.Escape(value).Replace("\\*", ".*") + "$";
+                }
+            }
+
+            public bool matchPath(string Path)
+            {
+                return Regex.IsMatch(Path, this.regexExpression);
+            }
+        }
+
+
+        private Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)> controller_paths = new Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)>();
+
+        List<ControllerEndpoint> endpoints = new List<ControllerEndpoint>();
 
         private void Loop()
         {
             while (listener.IsListening)
             {
                 HttpListenerContext context = listener.GetContext();
-                HandleIncoming(context);
+                Task.Run(() => HandleIncoming(context));
             }
         }
 
         private void HandleIncoming(HttpListenerContext ctx)
         {
-
             HttpListenerRequest req = ctx.Request;
             Uri uri = req.Url;
             if (uri == null) return;
-            string path = uri.AbsolutePath;
+            string Path = uri.AbsolutePath;
 
-            (ControllerMethod, PreExecuteControllerMethod) toInvoke;
-            if (controller_exactPaths.ContainsKey(path)) toInvoke = controller_exactPaths[path];
-            // else if (controller_subDirectories.ContainsKey(req.Url.getFirstSubDirectoryOfAbsPath())) toInvoke = controller_subDirectories[req.Url.getFirstSubDirectoryOfAbsPath()];
-            else
+            ControllerEndpoint endpoint = endpoints.Where(x => x.matchPath(Path)).FirstOrDefault();
+            if (endpoint == null)
             {
                 if (On404NotFound == null) ctx.CreateResponse("404", 404);
                 else On404NotFound(ctx);
-
                 return;
             }
 
-            if (toInvoke.Item2 != null)
+            HttpMethods? incomingMethod = getMethodFromString(ctx.Request.HttpMethod);
+
+            if ((endpoint.allowedHttpMethods & HttpMethods.ALLOW_ALL) != 0 || (incomingMethod != null && (endpoint.allowedHttpMethods & incomingMethod) != 0))
             {
-                bool _continue = toInvoke.Item2.Invoke(ctx);
-                if (!_continue) return;
+                if (endpoint.preExecuteControllerMethod != null)
+                {
+                    bool _continue = endpoint.preExecuteControllerMethod.Invoke(ctx);
+                    if (!_continue) return;
+                }
+
+                endpoint.controllerMethod.Invoke(ctx);
+            }
+            else
+            {
+                if (On405MethodNotAllowed == null) ctx.CreateResponse("405", 405);
+                else On405MethodNotAllowed(ctx);
             }
 
-            toInvoke.Item1.Invoke(ctx);
+
+            HttpMethods? getMethodFromString(string method)
+            {
+                if (method == "ALLOW_ALL") return null;
+
+                if (!Enum.TryParse<HttpMethods>(method, out HttpMethods res)) return null;
+
+                return res;
+            }
+
 
         }
+
     }
+
+    /// <summary>
+    /// Http Methods
+    /// </summary>
+    [Flags]
+    public enum HttpMethods
+    {
+        /// <summary>
+        /// Http Method GET
+        /// </summary>
+        GET = 1,
+
+        /// <summary>
+        /// Http Method POST
+        /// </summary>
+        POST = 2,
+
+        /// <summary>
+        /// Http Method PUT
+        /// </summary>
+        PUT = 4,
+
+        /// <summary>
+        /// Http Method PATCH
+        /// </summary>
+        PATCH = 8,
+
+        /// <summary>
+        /// Http Method DELETE
+        /// </summary>
+        DELETE = 16,
+
+        /// <summary>
+        /// Http Method HEAD
+        /// </summary>
+        HEAD = 32,
+
+        /// <summary>
+        /// Http Method OPTIONS
+        /// </summary>
+        OPTIONS = 64,
+
+        /// <summary>
+        /// Using this will allow any valid / invalid Http Methods
+        /// </summary>
+        ALLOW_ALL = 128
+    }
+
 }

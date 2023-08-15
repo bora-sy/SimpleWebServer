@@ -81,17 +81,6 @@ namespace SimpleWebServer.Extensions
             ctx.Response.Close();
         }
 
-        /*
-         public static string getFirstSubDirectoryOfAbsPath(this Uri uri)
-         {
-             string abspath = uri.AbsolutePath;
-
-             string[] pairs = abspath.Split('/');
-             if (pairs.Length == 1) return pairs[0];
-             return $"{pairs[0]}/{pairs[1]}";
-         }
-        */
-
 
     }
 }
