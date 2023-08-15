@@ -15,7 +15,7 @@ namespace SimpleWebServer.Attributes
         /// Specify the endpoint path by using this attribute
         /// </summary>
         /// <param name="Path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
-        /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default</param>
+        /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
         public WebPath(string Path, HttpMethods allowedMethods = HttpMethods.ALLOW_ALL)
         {
             this.path = Path;

@@ -14,7 +14,7 @@
             Specify the endpoint path by using this attribute
             </summary>
             <param name="Path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
-            <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default</param>
+            <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
         </member>
         <member name="P:SimpleWebServer.Attributes.WebPath.Path">
             <summary>
@@ -31,25 +31,26 @@
             extensions
             </summary>
         </member>
-        <member name="M:SimpleWebServer.Extensions.extensions.CreateHTMLResponse(System.Net.HttpListenerContext,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:SimpleWebServer.Extensions.extensions.CreateHTMLResponse(System.Net.HttpListenerContext,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Creates an HTML response to the incoming request.
             </summary>
             <param name="ctx">The main context</param>
-            <param name="htmlContent">HTML content</param>
+            <param name="htmlContent">HTML content in string format</param>
+            <param name="statusCode">HTTP Status Code, 200 [OK] by default</param>
             <param name="additionalHeaders">Additional HTTP headers</param>
-            <param name="charset">HTTP charset, utf-8 by default</param>
+            <param name="charset">HTTP Charset, UTF-8 by default</param>
             <returns>True if the response creation is successful; otherwise, false.</returns>
         </member>
-        <member name="M:SimpleWebServer.Extensions.extensions.CreateResponse(System.Net.HttpListenerContext,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:SimpleWebServer.Extensions.extensions.CreateStringResponse(System.Net.HttpListenerContext,System.String,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Creates a simple string response to the incoming request.
             </summary>
             <param name="ctx">The main context</param>
             <param name="content">String Content</param>
-            <param name="code">HTTP response code, 200 [OK] by default</param>
+            <param name="statusCode">HTTP Status Code, 200 [OK] by default</param>
             <param name="additionalHeaders">Additional HTTP headers</param>
-            <param name="charset">HTTP charset, utf-8 by default</param>
+            <param name="charset">HTTP Charset, UTF-8 by default</param>
             <returns>True if the response creation is successful; otherwise, false.</returns>
         </member>
         <member name="M:SimpleWebServer.Extensions.extensions.CreateResponse(System.Net.HttpListenerContext,System.Byte[],System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
@@ -58,8 +59,8 @@
             </summary>
             <param name="ctx">The main context</param>
             <param name="buffer">Bytes to be sent</param>
-            <param name="code">HTTP response code, 200 [OK] by default</param>
-            <param name="contentType">HTTP content type, null by default</param>
+            <param name="statusCode">HTTP Status Code, 200 [OK] by default</param>
+            <param name="contentType">HTTP Content Type header, null by default</param>
             <param name="additionalHeaders">Additional HTTP headers</param>
             <returns>True if the response creation is successful; otherwise, false.</returns>
         </member>
@@ -68,7 +69,7 @@
             Redirects the incoming request to a different URL.
             </summary>
             <param name="ctx">The main context.</param>
-            <param name="redirectUrl">The URL to redirect to.</param>
+            <param name="destinationURL">The destination URL for redirection</param>
         </member>
         <member name="T:SimpleWebServer.WebServer">
             <summary>
@@ -79,7 +80,7 @@
             <summary>
             Creation of the WebServer
             </summary>
-            <param name="prefix">Web Prefix [Example: "http://localhost:8080/"]</param>
+            <param name="RootURL">Root URL [Example: "http://localhost:8080/"]</param>
         </member>
         <member name="M:SimpleWebServer.WebServer.AddController``1(SimpleWebServer.WebServer.PreExecuteControllerMethod)">
             <summary>

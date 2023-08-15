@@ -23,11 +23,11 @@ namespace SimpleWebServer
         /// <summary>
         /// Creation of the WebServer
         /// </summary>
-        /// <param name="prefix">Web Prefix [Example: "http://localhost:8080/"]</param>
-        public WebServer(string prefix)
+        /// <param name="RootURL">Root URL [Example: "http://localhost:8080/"]</param>
+        public WebServer(string RootURL)
         {
             listener = new HttpListener();
-            listener.Prefixes.Add(prefix);
+            listener.Prefixes.Add(RootURL);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace SimpleWebServer
             ControllerEndpoint endpoint = endpoints.Where(x => x.matchPath(Path)).FirstOrDefault();
             if (endpoint == null)
             {
-                if (On404NotFound == null) ctx.CreateResponse("404", 404);
+                if (On404NotFound == null) ctx.CreateStringResponse("404", 404);
                 else On404NotFound(ctx);
                 return;
             }
@@ -175,7 +175,7 @@ namespace SimpleWebServer
             }
             else
             {
-                if (On405MethodNotAllowed == null) ctx.CreateResponse("405", 405);
+                if (On405MethodNotAllowed == null) ctx.CreateStringResponse("405", 405);
                 else On405MethodNotAllowed(ctx);
             }
 
