@@ -1,6 +1,6 @@
 # SimpleWebServer
 
-Simple Web Server for C#
+Simple & easy to use library for creating WebServers in C#
 
 [![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
 
