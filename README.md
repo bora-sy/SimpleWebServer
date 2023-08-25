@@ -1,3 +1,4 @@
+![Icon](Icon.png)
 # SimpleWebServer
 
 **Simple & easy to use library for creating web servers in C#**
