@@ -170,6 +170,7 @@ Creates an HTML response to the incoming request with necessary headers.
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
   <br>
+  <br>
   
 ```csharp
 HttpListenerResponse.CreateCSSResponse(string CSSContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
@@ -183,6 +184,7 @@ Creates a CSS response to the incoming request with necessary headers.
 * ***string charset (Optional)*** HTTP Charset, UTF-8 by default
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
+  <br>
   <br>
   
 ```csharp
@@ -198,6 +200,7 @@ Creates a JavaScript response to the incoming request with necessary headers.
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
   <br>
+  <br>
 
 ```csharp
 HttpListenerResponse.CreateFileResponse(string filePath, string customFileName = null, int statusCode = 200, Dictionary<string,string> additionalHeaders = null)
@@ -212,6 +215,7 @@ Creates a file response to the incoming request.
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
   <br>
+  <br>
 
 ```csharp
 HttpListenerResponse.CreateStringResponse(string content, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
@@ -225,6 +229,7 @@ Creates a plain text response to the incoming request with necessary headers.
 * ***string charset (Optional):*** HTTP Charset, UTF-8 by default
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
+  <br>
   <br>
 
 ```csharp
