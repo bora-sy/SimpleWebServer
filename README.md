@@ -1,10 +1,10 @@
 <img src="Icon.png" alt="Alt Text" width="150">
 
 # SimpleWebServer
+[![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
 
 **Simple & easy to use library for creating web servers in C#**
 
-[![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
 
 Contact me from discord for additional help & suggestions
 
