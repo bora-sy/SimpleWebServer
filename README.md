@@ -1,4 +1,5 @@
-![Icon](Icon.png)
+<img src="Icon.png" alt="Alt Text" width="150">
+
 # SimpleWebServer
 
 **Simple & easy to use library for creating web servers in C#**
