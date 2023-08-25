@@ -1,12 +1,12 @@
 # SimpleWebServer
 
-Simple & easy to use library for creating WebServers in C#
+**Simple & easy to use library for creating web servers in C#**
 
 [![NuGet](https://img.shields.io/nuget/v/SimpleWebServer.svg?label=NuGet)](https://nuget.org/packages/SimpleWebServer)
 
-**Contact me from discord for additional help & suggestions**
+Contact me from discord for additional help & suggestions
 
-**Discord: borasy**
+Discord: borasy
 
 ## Simple Demo
 
@@ -158,12 +158,40 @@ Use this attribute on Controller Methods inside Controller Classes to specify th
 **Namespace: SimpleWebServer.Extensions**
 
 ```csharp
-HttpListenerResponse.CreateHTMLResponse(string htmlContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+HttpListenerResponse.CreateHTMLResponse(string HTMLContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
-Creates an HTML response to the incoming request
+Creates an HTML response to the incoming request with necessary headers.
 
-* ***string htmlContent:*** HTML content in string format
+* ***string HTMLContent:*** HTML content in string format
+* ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
+* ***Dictionary<string, string> additionalHeaders (Optional):*** Additional HTTP headers, none by default
+* ***string charset (Optional)*** HTTP Charset, UTF-8 by default
+  <br>
+* ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
+  <br>
+  
+```csharp
+HttpListenerResponse.CreateCSSResponse(string CSSContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+```
+
+Creates a CSS response to the incoming request with necessary headers.
+
+* ***string CSSContent:*** CSS content in string format
+* ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
+* ***Dictionary<string, string> additionalHeaders (Optional):*** Additional HTTP headers, none by default
+* ***string charset (Optional)*** HTTP Charset, UTF-8 by default
+  <br>
+* ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
+  <br>
+  
+```csharp
+HttpListenerResponse.CreateJavaScriptResponse(string javaScriptContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+```
+
+Creates a JavaScript response to the incoming request with necessary headers.
+
+* ***string javaScriptContent:*** JavaScript content in string format
 * ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
 * ***Dictionary<string, string> additionalHeaders (Optional):*** Additional HTTP headers, none by default
 * ***string charset (Optional)*** HTTP Charset, UTF-8 by default
@@ -172,10 +200,24 @@ Creates an HTML response to the incoming request
   <br>
 
 ```csharp
+HttpListenerResponse.CreateFileResponse(string filePath, string customFileName = null, int statusCode = 200, Dictionary<string,string> additionalHeaders = null)
+```
+
+Creates a file response to the incoming request.
+
+* ***string filePath:*** Path of the response file
+* ***string customFileName (Optional):*** Custom file name for the response file
+* ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
+* ***Dictionary<string, string> additionalHeaders (Optional):*** Additional HTTP headers, none by default
+  <br>
+* ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
+  <br>
+
+```csharp
 HttpListenerResponse.CreateStringResponse(string content, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
-Creates a simple string response to the incoming request
+Creates a plain text response to the incoming request with necessary headers.
 
 * ***string content:*** String Content
 * ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
@@ -193,7 +235,7 @@ Creates a response to the incoming request.
 
 * ***byte[] buffer:*** Bytes to be sent
 * ***int statusCode (Optional):*** HTTP Status Code, 200 [OK] by default
-* ***string contentType (Optional):*** HTTP Content Type header, null by default
+* ***string contentTypeHeader (Optional):*** HTTP Content Type header, null by default
 * ***Dictionary<string, string> additionalHeaders (Optional):*** Additional HTTP headers, none by default
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
