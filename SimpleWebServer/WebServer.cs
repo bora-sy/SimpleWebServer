@@ -19,7 +19,6 @@ namespace SimpleWebServer
     public class WebServer
     {
 
-
         /// <summary>
         /// Creation of the WebServer
         /// </summary>
@@ -70,6 +69,8 @@ namespace SimpleWebServer
         /// </summary>
         public void Start()
         {
+            if (listener.IsListening) throw new Exception("WebServer has already been started.");
+
             listener.Start();
 
             Task.Run(() => Loop());
@@ -80,6 +81,8 @@ namespace SimpleWebServer
         /// </summary>
         public void Stop()
         {
+            if (!listener.IsListening) throw new InvalidOperationException("WebServer is not currently running.");
+
             listener.Stop();
         }
 
@@ -141,8 +144,17 @@ namespace SimpleWebServer
         {
             while (listener.IsListening)
             {
-                HttpListenerContext context = listener.GetContext();
-                Task.Run(() => HandleIncoming(context));
+                try
+                {
+                    HttpListenerContext context = listener.GetContext();
+                    Task.Run(() => HandleIncoming(context));
+                }
+                catch(Exception ex)
+                {
+                    if (!listener.IsListening) return;
+
+                    throw ex;
+                }
             }
         }
 
@@ -194,51 +206,5 @@ namespace SimpleWebServer
 
     }
 
-    /// <summary>
-    /// Http Methods
-    /// </summary>
-    [Flags]
-    public enum HttpMethods
-    {
-        /// <summary>
-        /// Http Method GET
-        /// </summary>
-        GET = 1,
-
-        /// <summary>
-        /// Http Method POST
-        /// </summary>
-        POST = 2,
-
-        /// <summary>
-        /// Http Method PUT
-        /// </summary>
-        PUT = 4,
-
-        /// <summary>
-        /// Http Method PATCH
-        /// </summary>
-        PATCH = 8,
-
-        /// <summary>
-        /// Http Method DELETE
-        /// </summary>
-        DELETE = 16,
-
-        /// <summary>
-        /// Http Method HEAD
-        /// </summary>
-        HEAD = 32,
-
-        /// <summary>
-        /// Http Method OPTIONS
-        /// </summary>
-        OPTIONS = 64,
-
-        /// <summary>
-        /// Using this will allow any valid / invalid Http Methods
-        /// </summary>
-        ALLOW_ALL = 128
-    }
 
 }
