@@ -240,6 +240,7 @@ Creates a response to the incoming request.
   <br>
 * ***RETURNS: True if the response creation is successful; otherwise, false. (bool)***
   <br>
+  <br>
 
 ```csharp
 HttpListenerResponse.Redirect(string destinationURL);
