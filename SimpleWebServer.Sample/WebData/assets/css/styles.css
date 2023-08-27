@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
+
+
+body {
+    margin: 0;
+    background-color: #313338;
+}
+
+.container {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    border: none;
+}
+
+.title{
+    color: white;
+}
+
+.label{
+    color: white;
+    font-size: large;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.a_button {
+    cursor: pointer;
+    margin: 30px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    max-width: 400px;
+    font-size: 25px;
+    border-radius: 50px;
+    font-family: 'Roboto Mono', monospace;
+    text-align: left;
+    background-color: #1e1f22;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative; /* Set position to relative */
+}
+
+.icon {
+    flex: 0 0 40px; /* Set a fixed width and height for the icon */
+    font-size: 40px; /* Adjust font size as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    flex: 1; /* Allow the text to take up remaining space */
+    padding-left: 20px; /* Add some space between icon and text */
+}
+
+.a_button:hover {
+    background-color: white;
+    color: #1e1f22;
+    transform: scale(1.05);
+}
+
+
+@media (max-width: 500px) {
+    .a_button {
+        font-size: 20px;
+        margin: 20px;
+    }
+}
+
+@media (max-width: 250px) {
+    .a_button {
+        font-size: 15px;
+        margin: 20px;
+    }
+}
