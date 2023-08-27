@@ -38,30 +38,75 @@ namespace SimpleWebServer
         public int AddController<T>(PreExecuteControllerMethod PreExecute = null)
         {
             Type classType = typeof(T);
-            object instance = Activator.CreateInstance(classType);
+            object controllerInstance = Activator.CreateInstance(classType);
             MethodInfo[] methods = classType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod)
                                         .Where(m => m.DeclaringType == classType)
                                         .ToArray();
-            int c = 0;
-            foreach (MethodInfo method in methods)
+
+            List<ControllerEndpoint> newEndpoints = new List<ControllerEndpoint>();
+
+            for(int i = 0; i < methods.Length; i++)
             {
-                WebPath exactPathAttr = method.GetCustomAttribute<WebPath>();
-                if (exactPathAttr == null) continue;
+                MethodInfo method = methods[i];
 
-                ControllerMethod cmethod = (ControllerMethod)method.CreateDelegate(typeof(ControllerMethod), instance);
+                WebPath webPath = method.GetCustomAttribute<WebPath>();
+                if (webPath == null) continue;
 
+                if (!IsMethodInfoValidControllerMethod(method)) 
+                    throw new InvalidOperationException($"The method '{method.Name}' has invalid parameters or an invalid return type. Please review the method signature. (Controller Name: '{classType.Name}')");
+
+                if (newEndpoints.Where(x => x.checkConflict(webPath)).FirstOrDefault() != null || endpoints.Where(x => x.checkConflict(webPath)).FirstOrDefault() != null)
+                    throw new Exception($"The method '{method.Name}' has a conflicting Controller Method that captures the same path using the same HTTP method(s). Please consider either altering the target path or adjusting the allowed HTTP methods.");
+
+                ControllerMethod controllerMethod = (ControllerMethod)method.CreateDelegate(typeof(ControllerMethod), controllerInstance);
+                
                 ControllerEndpoint endpoint = new ControllerEndpoint(
-                    exactPathAttr.Path,
-                    cmethod,
+                    webPath.Path,
+                    controllerMethod,
                     PreExecute,
-                    exactPathAttr.AllowedHttpMethods
+                    webPath.AllowedHttpMethods
                     );
 
-                endpoints.Add(endpoint);
-                c++;
+                newEndpoints.Add(endpoint);
             }
 
-            return c;
+            endpoints.AddRange(newEndpoints);
+
+            return newEndpoints.Count;
+
+
+
+            bool IsMethodInfoValidControllerMethod(MethodInfo methodInfo)
+            {
+                Type delegateType = typeof(ControllerMethod);
+
+                if (!delegateType.IsSubclassOf(typeof(Delegate)) || !methodInfo.IsPublic)
+                {
+                    return false;
+                }
+
+                MethodInfo invokeMethod = delegateType.GetMethod("Invoke");
+                ParameterInfo[] delegateParameters = invokeMethod.GetParameters();
+                ParameterInfo[] methodParameters = methodInfo.GetParameters();
+
+                if (delegateParameters.Length != methodParameters.Length)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < delegateParameters.Length; i++)
+                {
+                    if (delegateParameters[i].ParameterType != methodParameters[i].ParameterType)
+                    {
+                        return false;
+                    }
+                }
+
+                Type delegateReturnType = invokeMethod.ReturnType;
+                Type methodReturnType = methodInfo.ReturnType;
+
+                return delegateReturnType == methodReturnType || delegateReturnType == typeof(void);
+            }
         }
 
         /// <summary>
@@ -108,34 +153,6 @@ namespace SimpleWebServer
 
         private HttpListener listener;
 
-        private class ControllerEndpoint
-        {
-            private string regexExpression;
-            public ControllerMethod controllerMethod { get; private set; }
-            public PreExecuteControllerMethod preExecuteControllerMethod { get; private set; }
-            public HttpMethods allowedHttpMethods { get; private set; }
-
-            public ControllerEndpoint(string path, ControllerMethod controllerMethod, PreExecuteControllerMethod preExecuteControllerMethod, HttpMethods allowedHttpMethods)
-            {
-                this.regexExpression = WildCardToRegular(path);
-                this.controllerMethod = controllerMethod;
-                this.preExecuteControllerMethod = preExecuteControllerMethod;
-                this.allowedHttpMethods = allowedHttpMethods;
-
-
-                string WildCardToRegular(string value)
-                {
-                    return "^" + Regex.Escape(value).Replace("\\*", ".*") + "$";
-                }
-            }
-
-            public bool matchPath(string Path)
-            {
-                return Regex.IsMatch(Path, this.regexExpression);
-            }
-        }
-
-
         private Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)> controller_paths = new Dictionary<string, (ControllerMethod, PreExecuteControllerMethod)>();
 
         List<ControllerEndpoint> endpoints = new List<ControllerEndpoint>();
@@ -165,8 +182,8 @@ namespace SimpleWebServer
             if (uri == null) return;
             string Path = uri.AbsolutePath;
 
-            ControllerEndpoint endpoint = endpoints.Where(x => x.matchPath(Path)).FirstOrDefault();
-            if (endpoint == null)
+            ControllerEndpoint[] pathMatchedEndpoints = endpoints.Where(x => x.matchPath(Path)).ToArray();
+            if (pathMatchedEndpoints.Length == 0)
             {
                 if (On404NotFound == null) ctx.CreateStringResponse("404", 404);
                 else On404NotFound(ctx);
@@ -175,21 +192,22 @@ namespace SimpleWebServer
 
             HttpMethods? incomingMethod = getMethodFromString(ctx.Request.HttpMethod);
 
-            if ((endpoint.allowedHttpMethods & HttpMethods.ALLOW_ALL) != 0 || (incomingMethod != null && (endpoint.allowedHttpMethods & incomingMethod) != 0))
-            {
-                if (endpoint.preExecuteControllerMethod != null)
-                {
-                    bool _continue = endpoint.preExecuteControllerMethod.Invoke(ctx);
-                    if (!_continue) return;
-                }
+            ControllerEndpoint targetEndpoint = pathMatchedEndpoints.Where(x => x.matchHttpMethod(incomingMethod)).FirstOrDefault();
 
-                endpoint.controllerMethod.Invoke(ctx);
-            }
-            else
+            if(targetEndpoint == null)
             {
                 if (On405MethodNotAllowed == null) ctx.CreateStringResponse("405", 405);
                 else On405MethodNotAllowed(ctx);
+                return;
             }
+
+            if(targetEndpoint.preExecuteControllerMethod != null)
+            {
+                bool _continue = targetEndpoint.preExecuteControllerMethod.Invoke(ctx);
+                if (!_continue) return;
+            }
+
+            targetEndpoint.controllerMethod.Invoke(ctx);
 
 
             HttpMethods? getMethodFromString(string method)
