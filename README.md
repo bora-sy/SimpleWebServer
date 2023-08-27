@@ -10,7 +10,7 @@ Contact me from discord for additional help & suggestions
 
 Discord: borasy
 
-## Simple Demo
+## Simple Usage
 
 Program.cs:
 
