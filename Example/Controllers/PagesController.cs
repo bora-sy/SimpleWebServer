@@ -14,31 +14,31 @@ namespace SimpleWebServer.Sample.Controllers
     {
         // http://localhost:8080/ AND http://localhost:8080 (They both are captured by "/" )
         [WebPath("/")]
-        public void main(HttpListenerContext ctx)
+        public async Task main(HttpListenerContext ctx)
         {
             ctx.Redirect("/index");
         }
 
         // http://localhost:8080/index
         [WebPath("/index")]
-        public void index(HttpListenerContext ctx)
+        public async Task index(HttpListenerContext ctx)
         {
             string filePath = Path.Combine(Program.WebDataFolderPath, "pages", "index.html");
 
             string htmlContent = File.ReadAllText(filePath);
 
-            ctx.CreateHTMLResponse(htmlContent);
+            await ctx.CreateHTMLResponseAsync(htmlContent);
         }
 
         // http://localhost:8080/randomnumbergenerator
         [WebPath("/randomnumbergenerator")]
-        public void randomnumbergenerator(HttpListenerContext ctx)
+        public async Task randomnumbergenerator(HttpListenerContext ctx)
         {
             string filePath = Path.Combine(Program.WebDataFolderPath, "pages", "randomnumbergenerator.html");
 
             string htmlContent = File.ReadAllText(filePath);
 
-            ctx.CreateHTMLResponse(htmlContent);
+            await ctx.CreateHTMLResponseAsync(htmlContent);
         }
 
     }

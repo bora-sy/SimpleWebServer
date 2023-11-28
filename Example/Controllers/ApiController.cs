@@ -11,14 +11,13 @@ namespace SimpleWebServer.Sample.Controllers
 {
     internal class ApiController
     {
-
         // http://localhost:8080/api/generaterandomnumber
         [WebPath("/api/generaterandomnumber")]
-        public void generateRandomNum(HttpListenerContext ctx)
+        public async Task generateRandomNum(HttpListenerContext ctx)
         {
             int randomNum = new Random().Next(int.MaxValue);
 
-            ctx.CreateStringResponse(randomNum.ToString(),404);
+            await ctx.CreateStringResponseAsync(randomNum.ToString());
 
             Console.WriteLine("Generated Number: " + randomNum.ToString());
         }
