@@ -134,7 +134,7 @@ namespace SimpleWebServer
         /// <summary>
         /// The method that will be executed when a user sends a request to the specified path.
         /// </summary>
-        public delegate void ControllerMethod(HttpListenerContext ctx);
+        public delegate Task ControllerMethod(HttpListenerContext ctx);
 
         /// <summary>
         /// This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed.
