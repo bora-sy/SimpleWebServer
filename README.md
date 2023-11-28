@@ -161,6 +161,7 @@ Use this attribute on Controller Methods inside Controller Classes to specify th
 
 ```csharp
 HttpListenerResponse.CreateHTMLResponse(string HTMLContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+HttpListenerResponse.CreateHTMLResponseAsync(string HTMLContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
 Creates an HTML response to the incoming request with necessary headers.
@@ -176,6 +177,7 @@ Creates an HTML response to the incoming request with necessary headers.
   
 ```csharp
 HttpListenerResponse.CreateCSSResponse(string CSSContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+HttpListenerResponse.CreateCSSResponseAsync(string CSSContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
 Creates a CSS response to the incoming request with necessary headers.
@@ -191,6 +193,7 @@ Creates a CSS response to the incoming request with necessary headers.
   
 ```csharp
 HttpListenerResponse.CreateJavaScriptResponse(string javaScriptContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+HttpListenerResponse.CreateJavaScriptResponseAsync(string javaScriptContent, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
 Creates a JavaScript response to the incoming request with necessary headers.
@@ -205,7 +208,8 @@ Creates a JavaScript response to the incoming request with necessary headers.
   <br>
 
 ```csharp
-HttpListenerResponse.CreateFileResponse(string filePath, string customFileName = null, int statusCode = 200, Dictionary<string,string> additionalHeaders = null)
+HttpListenerResponse.CreateFileResponse(string filePath, string customFileName = null, int statusCode = 200, Dictionary<string,string> additionalHeaders = null);
+HttpListenerResponse.CreateFileResponseAsync(string filePath, string customFileName = null, int statusCode = 200, Dictionary<string,string> additionalHeaders = null);
 ```
 
 Creates a file response to the incoming request.
@@ -221,6 +225,7 @@ Creates a file response to the incoming request.
 
 ```csharp
 HttpListenerResponse.CreateStringResponse(string content, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
+HttpListenerResponse.CreateStringResponseAsync(string content, int statusCode = 200, Dictionary<string, string> additionalHeaders = null, string charset = "utf-8");
 ```
 
 Creates a plain text response to the incoming request with necessary headers.
@@ -236,6 +241,7 @@ Creates a plain text response to the incoming request with necessary headers.
 
 ```csharp
 HttpListenerResponse.CreateResponse(byte[] buffer, int statusCode = 200, string contentType = null, Dictionary<string, string> additionalHeaders = null);
+HttpListenerResponse.CreateResponseAsync(byte[] buffer, int statusCode = 200, string contentType = null, Dictionary<string, string> additionalHeaders = null);
 ```
 
 Creates a response to the incoming request.
