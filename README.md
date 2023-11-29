@@ -57,16 +57,16 @@ namespace ConsoleApp1
     {
 
         [WebPath("/")]
-        public async void Main(HttpListenerContext ctx) => ctx.Redirect("/index");
+        public async Task Main(HttpListenerContext ctx) => ctx.Redirect("/index");
 
         [WebPath("/index")]
-        public async void Index(HttpListenerContext ctx)
+        public async Task Index(HttpListenerContext ctx)
         {
             string? name = ctx.Request.QueryString["name"];
 
             string response = $"Hello, {name ?? "World"}";
 
-            bool success = ctx.CreateHTMLResponse(response);
+            bool success = await ctx.CreateHTMLResponseAsync(response);
 
             Console.WriteLine(success ? "Successfully created response" : "An error occured while creating response");
         }
