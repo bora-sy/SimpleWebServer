@@ -10,7 +10,7 @@
   <Description>Simple &amp; easy to use library for creating web servers in C#</Description>
   <PackageProjectUrl>https://github.com/BoRa-SY/SimpleWebServer</PackageProjectUrl>
   <RepositoryUrl>https://github.com/BoRa-SY/SimpleWebServer</RepositoryUrl>
-  <PackageReleaseNotes>* Renamed AddAPIEndpoint -&gt; AddRoute
+  <PackageReleaseNotes>* Added PreExecute parameter to AddRoute
 
 Check the github repository for full documentation</PackageReleaseNotes>
   <PackageTags>http; server; webserver; simpleserver; c#server; c#_web_server; simple_server; simpleserver; simplehttpserver; httpserver; simplehttp; httpsimple; simpleweb; webserver; websimple</PackageTags>
