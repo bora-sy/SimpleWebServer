@@ -169,8 +169,6 @@ namespace SimpleWebServer
                 catch(Exception ex)
                 {
                     if (!listener.IsListening) return;
-
-                    throw ex;
                 }
             }
         }
