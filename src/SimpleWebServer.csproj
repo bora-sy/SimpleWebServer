@@ -10,8 +10,8 @@
   <Description>Simple &amp; easy to use library for creating web servers in C#</Description>
   <PackageProjectUrl>https://github.com/BoRa-SY/SimpleWebServer</PackageProjectUrl>
   <RepositoryUrl>https://github.com/BoRa-SY/SimpleWebServer</RepositoryUrl>
-  <PackageReleaseNotes>* Changed ControllerMethod's return type to Task
-* Added async extensions
+  <PackageReleaseNotes>* Created a function to add a single API Endpoint
+* Changed the enum name HttpMethods -&gt; HttpMethod
 
 Check the github repository for full documentation</PackageReleaseNotes>
   <PackageTags>http; server; webserver; simpleserver; c#server; c#_web_server; simple_server; simpleserver; simplehttpserver; httpserver; simplehttp; httpsimple; simpleweb; webserver; websimple</PackageTags>
