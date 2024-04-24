@@ -110,6 +110,30 @@ namespace SimpleWebServer
         }
 
         /// <summary>
+        /// Adds a single API Endpoint to the WebServer
+        /// </summary>
+        /// <param name="path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
+        /// <param name="controllerMethod">The method that will be executed when a user sends a request to the specified path.</param>
+        /// <param name="httpMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
+        /// <exception cref="Exception"></exception>
+        public void AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethods httpMethods = HttpMethods.ALLOW_ALL)
+        {
+            ControllerEndpoint endpoint = new ControllerEndpoint(
+                    path,
+                    controllerMethod,
+                    null,
+                    httpMethods
+                    );
+
+            WebPath webPath = new WebPath(path, httpMethods);
+
+            if (endpoints.Where(x => x.checkConflict(webPath)).FirstOrDefault() != null)
+                throw new Exception($"The method has a conflicting Controller Method that captures the same path using the same HTTP method(s). Please consider either altering the target path or adjusting the allowed HTTP methods.");
+
+            endpoints.Add(endpoint);
+        }
+
+        /// <summary>
         /// Starts the WebServer
         /// </summary>
         public void Start()
