@@ -15,8 +15,8 @@ namespace SimpleWebServer
         private string regexExpression;
         public ControllerMethod controllerMethod { get; private set; }
         public PreExecuteControllerMethod preExecuteControllerMethod { get; private set; }
-        public HttpMethods allowedHttpMethods { get; private set; }
-        public ControllerEndpoint(string path, ControllerMethod controllerMethod, PreExecuteControllerMethod preExecuteControllerMethod, HttpMethods allowedHttpMethods)
+        public HttpMethod allowedHttpMethods { get; private set; }
+        public ControllerEndpoint(string path, ControllerMethod controllerMethod, PreExecuteControllerMethod preExecuteControllerMethod, HttpMethod allowedHttpMethods)
         {
             this.path = path;
             this.regexExpression = WildCardToRegular(path);
@@ -35,15 +35,15 @@ namespace SimpleWebServer
         {
             if (path != wp.Path) return false;
 
-            if(wp.AllowedHttpMethods == HttpMethods.ALLOW_ALL) return true;
+            if(wp.AllowedHttpMethods == HttpMethod.ALLOW_ALL) return true;
 
             bool isMethodMatch = matchHttpMethod(wp.AllowedHttpMethods);
             return isMethodMatch;
         }
 
-        public bool matchHttpMethod(HttpMethods? incomingRequestMethod)
+        public bool matchHttpMethod(HttpMethod? incomingRequestMethod)
         {
-            if ((allowedHttpMethods & HttpMethods.ALLOW_ALL) != 0) return true;
+            if ((allowedHttpMethods & HttpMethod.ALLOW_ALL) != 0) return true;
 
             if(incomingRequestMethod == null) return false;
 

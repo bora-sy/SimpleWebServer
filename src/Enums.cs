@@ -8,7 +8,7 @@ namespace SimpleWebServer
     /// Http Methods
     /// </summary>
     [Flags]
-    public enum HttpMethods
+    public enum HttpMethod
     {
         /// <summary>
         /// Http Method GET

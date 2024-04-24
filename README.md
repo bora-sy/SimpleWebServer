@@ -118,6 +118,18 @@ server.AddController<T>(PreExecuteControllerMethod PreExecute = null);
 * ***PreExecuteControllerMethod PreExecute (Optional):*** PreExecute method for this controller (This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed)
   <br>
 * ***RETURNS: Added endpoint count (int)***
+
+  <br>
+
+*Adding single API Endpoint To The Server:*
+
+```csharp
+server.AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL);
+```
+
+* ***string path:*** Path of the endpoint (asterisk (\*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/\*", "/users/modify/\*"]
+* ***ControllerMethod controllerMethod:*** The method that will be executed when a user sends a request to the specified path.
+* ***HttpMethod allowedMethods (Optional):*** Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | *(bitwise or)* character)
   <br>
 
 #### WebServer Events
@@ -146,13 +158,13 @@ server.AddController<T>(PreExecuteControllerMethod PreExecute = null);
 **Namespace: SimpleWebServer.Attributes**
 
 ```csharp
-[WebPath(string Path, HttpMethods allowedMethods = HttpMethods.ALLOW_ALL)]
+[WebPath(string Path, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)]
 ```
 
-Use this attribute on Controller Methods inside Controller Classes to specify the path and HttpMethods.
+Use this attribute on Controller Methods inside Controller Classes to specify the path and HttpMethod.
 
 * ***string Path:*** Path of the endpoint (asterisk (\*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/\*", "/users/modify/\*"]
-* ***HttpMethods allowedMethods (Optional):*** Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | *(bitwise or)* character)
+* ***HttpMethod allowedMethods (Optional):*** Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | *(bitwise or)* character)
   <br>
 
 ### Extensions

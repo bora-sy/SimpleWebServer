@@ -16,7 +16,7 @@ namespace SimpleWebServer.Attributes
         /// </summary>
         /// <param name="Path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
         /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
-        public WebPath(string Path, HttpMethods allowedMethods = HttpMethods.ALLOW_ALL)
+        public WebPath(string Path, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)
         {
             this.path = Path;
             this.allowedHttpMethods = allowedMethods;
@@ -34,11 +34,11 @@ namespace SimpleWebServer.Attributes
         /// <summary>
         /// Allowed HTTP Methods
         /// </summary>
-        public HttpMethods AllowedHttpMethods
+        public HttpMethod AllowedHttpMethods
         {
             get { return this.allowedHttpMethods; }
         }
-        private HttpMethods allowedHttpMethods;
+        private HttpMethod allowedHttpMethods;
     }
 
 }
