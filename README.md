@@ -118,6 +118,7 @@ server.AddController<T>(PreExecuteControllerMethod PreExecute = null);
 * ***PreExecuteControllerMethod PreExecute (Optional):*** PreExecute method for this controller (This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed)
   <br>
 * ***RETURNS: Added endpoint count (int)***
+
   <br>
 
 *Adding single API Endpoint To The Server:*
