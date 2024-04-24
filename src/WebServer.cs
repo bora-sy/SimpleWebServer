@@ -116,7 +116,7 @@ namespace SimpleWebServer
         /// <param name="controllerMethod">The method that will be executed when a user sends a request to the specified path.</param>
         /// <param name="httpMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
         /// <exception cref="Exception"></exception>
-        public void AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethods httpMethods = HttpMethods.ALLOW_ALL)
+        public void AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethod httpMethods = HttpMethod.ALLOW_ALL)
         {
             ControllerEndpoint endpoint = new ControllerEndpoint(
                     path,
@@ -212,7 +212,7 @@ namespace SimpleWebServer
                 return;
             }
 
-            HttpMethods? incomingMethod = getMethodFromString(ctx.Request.HttpMethod);
+            HttpMethod? incomingMethod = getMethodFromString(ctx.Request.HttpMethod);
 
             ControllerEndpoint targetEndpoint = pathMatchedEndpoints.Where(x => x.matchHttpMethod(incomingMethod)).FirstOrDefault();
 
@@ -232,11 +232,11 @@ namespace SimpleWebServer
             targetEndpoint.controllerMethod.Invoke(ctx);
 
 
-            HttpMethods? getMethodFromString(string method)
+            HttpMethod? getMethodFromString(string method)
             {
                 if (method == "ALLOW_ALL") return null;
 
-                if (!Enum.TryParse<HttpMethods>(method, out HttpMethods res)) return null;
+                if (!Enum.TryParse<HttpMethod>(method, out HttpMethod res)) return null;
 
                 return res;
             }
