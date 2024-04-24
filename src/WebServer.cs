@@ -114,14 +114,15 @@ namespace SimpleWebServer
         /// </summary>
         /// <param name="path">Path of the endpoint (asterisk (*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/*", "/users/modify/*"]</param>
         /// <param name="controllerMethod">The method that will be executed when a user sends a request to the specified path.</param>
+        /// <param name="preExecute">This method will be executed before the controller methods to handle bulk authentication/authorization. If it returns true, the specified controller method will be executed; otherwise, the specified controller method won't be executed.</param>
         /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
         /// <exception cref="Exception"></exception>
-        public void AddRoute(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)
+        public void AddRoute(string path, ControllerMethod controllerMethod, PreExecuteControllerMethod preExecute = null, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)
         {
             ControllerEndpoint endpoint = new ControllerEndpoint(
                     path,
                     controllerMethod,
-                    null,
+                    preExecute,
                     allowedMethods
                     );
 
