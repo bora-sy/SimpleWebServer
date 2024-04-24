@@ -124,7 +124,7 @@ server.AddController<T>(PreExecuteControllerMethod PreExecute = null);
 *Adding single API Endpoint To The Server:*
 
 ```csharp
-server.AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL);
+server.AddRoute(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL);
 ```
 
 * ***string path:*** Path of the endpoint (asterisk (\*) wildcard is supported) [Examples: "/", "/index", "/api/users", "/assets/\*", "/users/modify/\*"]

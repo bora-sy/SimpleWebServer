@@ -116,7 +116,7 @@ namespace SimpleWebServer
         /// <param name="controllerMethod">The method that will be executed when a user sends a request to the specified path.</param>
         /// <param name="allowedMethods">Allowed HTTP Methods, ALLOW_ALL by default (Can be stacked using the | (bitwise or) character)</param>
         /// <exception cref="Exception"></exception>
-        public void AddAPIEndpoint(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)
+        public void AddRoute(string path, ControllerMethod controllerMethod, HttpMethod allowedMethods = HttpMethod.ALLOW_ALL)
         {
             ControllerEndpoint endpoint = new ControllerEndpoint(
                     path,
